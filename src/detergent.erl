@@ -34,6 +34,15 @@
 
 -define(HTTP_REQ_TIMEOUT, 20000).
 
+-define(HTTP_REQ_SSL_VERIFY_SELFSIGNEDPEER,
+    {ssl, [
+        {verify, verify_peer},
+        {cacerts,[]},
+        {verify_fun, {
+            fun (_, {bad_cert, selfsigned_peer}, U) -> {valid, U} end, []
+        }}
+    ]}).
+
 %%-define(dbg(X,Y),
 %%        error_logger:info_msg("*dbg ~p(~p): " X,
 %%                              [?MODULE, ?LINE | Y])).
@@ -400,7 +409,7 @@ get_url_file(URL) ->
     end.
 
 get_remote_file(URL) ->
-    case httpc:request(URL) of
+    case httpc:request(get, {URL, []}, [?HTTP_REQ_SSL_VERIFY_SELFSIGNEDPEER], []) of
     {ok,{{_HTTP,200,_OK}, _Headers, Body}} ->
         {ok, Body};
     {ok,{{_HTTP,RC,Emsg}, _Headers, _Body}} ->
@@ -442,7 +451,7 @@ inets_request(URL, SoapAction, Request, Options, Headers, ContentType) ->
                       {URL,NewHeaders,
                        ContentType,
                        Request},
-                      [{timeout,?HTTP_REQ_TIMEOUT}],
+                      [{timeout,?HTTP_REQ_TIMEOUT}, ?HTTP_REQ_SSL_VERIFY_SELFSIGNEDPEER],
                       [{sync, true}, {full_result, true}, {body_format, string}]) of
         {ok,{{_HTTP,200,_OK},ResponseHeaders,ResponseBody}} ->
             {ok, 200, ResponseHeaders, ResponseBody};
