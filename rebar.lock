@@ -1,0 +1,4 @@
+[{<<"erlsom">>,
+  {git,"git@github.com:willemdj/erlsom.git",
+       {ref,"68b6119f2f962ba8146075dc14ef02fa7f325011"}},
+  0}].
