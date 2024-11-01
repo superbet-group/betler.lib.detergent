@@ -22,40 +22,6 @@ Detergent depends on the excellent Erlsom library
 for all XML interactions. Erlsom takes away quite
 a bit of the pain of working with XML.
 
-## Building
-
-Detergent uses rebar for building and wraps it i
-a Makefile for convenience.
-
-First clone Detergent from GitHub:
-
-    $ git clone git://github.com/devinus/detergent.git
-
-Then change into the newly created directory:
-
-    $ cd detergent
-
-And make:
-
-    $ make
-
-Rebar will first pull in Erlsom as a dependency
-from GitHub, attempt to build it, then build
-Detergent.
-
-## Testing
-
-To test your Detergent build, start an Erlang
-shell and run the detergent:qtest/0 function.
-
-The qtest/0 function attempts to call a web
-service at webservicex.net to retrieve the
-weather repeat for Boston.
-
-    $ erl -pa deps/erlsom/ebin ebin
-    > inets:start().
-    > detergent:qtest().
-
 License
 =======
 
