@@ -218,10 +218,11 @@ call_attach(#wsdl{operations = Operations, model = Model},
         Envelope = mk_envelope(Message, Headers),
         %% Encode the message
         case erlsom:write(Envelope, Model) of
-        {ok, XmlMessage} ->
-            RequestLogger(XmlMessage),
+        {ok, XmlMessage0} ->
+            XmlMessage1 = unicode:characters_to_binary(XmlMessage0),
+            RequestLogger(XmlMessage1),
             {ContentType, Request} =
-                        make_request_body(XmlMessage, Attachments),
+                        make_request_body(XmlMessage1, Attachments),
                     ?dbg("+++ Request = ~p~n", [Request]),
             URL = case Url of
                 undefined ->
